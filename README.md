@@ -14,6 +14,10 @@
 <ol> 오늘의 집 특성 상, 리뷰가 많이 달린 제품일 수록 상위에 노출하는 경향을 보여 하단 부는 데이터가 적어 의미가 없을 듯</ol>
 <ol> 동작 환경 : Windows 8, Windows 10 </ol>
 
+<H2> Result </H2>
+<img src = "https://user-images.githubusercontent.com/43870121/101126668-50b7e280-363f-11eb-8640-c23cc718852a.png" width = "60%" height = "60%">
+<img src = "https://user-images.githubusercontent.com/43870121/101126674-5281a600-363f-11eb-9502-d66e4a1c7c7f.png" width = "60%" height = "60%">
+
 <hr>
 
 <H1> 일간베스트 저장소 </H1>
