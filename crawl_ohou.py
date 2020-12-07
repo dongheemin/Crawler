@@ -72,7 +72,7 @@ def ohou_crawling(url):
         title: review,
         '구매일':dates
     })
-    output.to_excel(excel_writer='./output/output.csv')
+    output.to_excel(excel_writer='./output_ohou.csv')
 
 #오늘의 집 링크 입력 => query="Product_Name"
 ohou_crawling("https://ohou.se/productions/feed?query=%EB%84%A4%EC%98%A4%ED%94%8C%EB%9E%A8")
