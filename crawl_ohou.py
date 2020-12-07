@@ -21,10 +21,10 @@ def ohou_crawling(url):
 
     review = []
     dates = []
-    shoppings = []
+    # shoppings = []
 
     # 세부아이템 이동
-    i = 0
+    # i = 0
     time.sleep(5.5)
     soup = BeautifulSoup(driver.page_source, "lxml")
     for links in soup.find_all("a",{'class':'production-item__overlay'}):
