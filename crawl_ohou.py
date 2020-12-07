@@ -6,6 +6,17 @@ import numpy as np
 import pandas as pd
 import re
 import time
+import datetime
+
+def doScrollDown(whileSecond, driver):
+    start = datetime.datetime.now()
+    end = start + datetime.timedelta(seconds=whileSecond)
+
+    while True:
+        driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
+        time.sleep(1)
+        if datetime.datetime.now() > end:
+            break
 
 def ohou_crawling(url):
     driver_path = "driver/chromedriver.exe"
@@ -21,11 +32,11 @@ def ohou_crawling(url):
 
     review = []
     dates = []
-    # shoppings = []
+    shoppings = []
 
     # 세부아이템 이동
-    # i = 0
     time.sleep(5.5)
+    # doScrollDown(3, driver) #스크롤 다운기능
     soup = BeautifulSoup(driver.page_source, "lxml")
     for links in soup.find_all("a",{'class':'production-item__overlay'}):
         if 'href' in links.attrs:
@@ -46,14 +57,8 @@ def ohou_crawling(url):
 
                     for dat in date.split('$'):
                         if(dat != ', ' and dat != ']' and dat != '['):
-                            tmp = []
-                            # print(dat)
                             dat = dat.split(' ∙ ')
-
-                            # print(dat[0])
-                            # print(dat[1])
                             dates.append(dat[0])
-                            # shoppings.append(dat[1])
 
                     driver.find_element_by_class_name('_2XI47._3I7ex').click()
                     time.sleep(1)
