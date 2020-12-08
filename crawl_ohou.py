@@ -19,15 +19,17 @@ def doScrollDown(whileSecond, driver):
             break
 
 def ohou_crawling(url, mode = 0):
+    #driver init
     driver_path = "driver/chromedriver.exe"
     driver = webdriver.Chrome(executable_path=driver_path)
 
-    # 페이지 이동
+    # mode selection
     if mode == 1:
         url += "&order=review"
     elif mode == 2:
         url += "&order=buy"
 
+    # page 검사
     try:
         url_page = url
         driver.get(url_page)
@@ -35,24 +37,29 @@ def ohou_crawling(url, mode = 0):
         print("부정확한 url입니다.")
         return -1
 
-    time.sleep(1)
-    #페이지 정보 획득
-    title = str(driver.find_element_by_class_name('production-item__header__name').text)
-
-    review = []
-    dates = []
-    shoppings = []
-
-    # 세부아이템 이동
+    #이동 대기
     time.sleep(5.5)
-    # doScrollDown(3, driver) #스크롤 다운기능
+
+    # 세부아이템 url 수집
     soup = BeautifulSoup(driver.page_source, "lxml")
+    # doScrollDown(3, driver) #스크롤 다운기능
     for links in soup.find_all("a",{'class':'production-item__overlay'}):
         if 'href' in links.attrs:
+            review = []
+            dates = []
             link = "https://ohou.se"+str(links.attrs['href'])
             print(link)
+
+            # 세부아이템 이동
             driver.get(link)
             time.sleep(3.5)
+
+            #제목 수집
+            html = driver.page_source
+            soup = BeautifulSoup(html, "lxml")
+            title = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':'production-selling-header__title__name'})))
+
+            #리뷰 수집
             while(1):
                 try:
                     html = driver.page_source
@@ -61,7 +68,6 @@ def ohou_crawling(url, mode = 0):
                     date = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':'production-review-item__writer__info__date'})).replace("\n", ""))
                     for tem in temp.split('$'):
                         if(tem != ', ' and tem != ']' and tem != '['):
-                            # print(tem.replace("\n", ""))
                             review.append(tem.replace("\n", ""))
 
                     for dat in date.split('$'):
@@ -69,14 +75,14 @@ def ohou_crawling(url, mode = 0):
                             dat = dat.split(' ∙ ')
                             dates.append(dat[0])
 
-                    driver.find_element_by_class_name('_2XI47._3I7ex').click()
-                    time.sleep(1)
+                    driver.find_element_by_class_name('_2XI47._3I7ex').click() #다음버튼
+                    time.sleep(1) #로딩 대기
 
                 except:
                     break
-    print(len(review))
-    print(len(dates))
-    print(len(shoppings))
+    # print(len(review))
+    # print(len(dates))
+    # print(len(shoppings))
     output = pd.DataFrame({
         title: review,
         '구매일':dates
