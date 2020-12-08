@@ -85,7 +85,7 @@ def ohou_crawling(url, mode = 0):
                     i+=1
                     break
 
-    output = pd.DataFrame(reviews)
+    output = pd.DataFrame.from_dict(reviews, orient='index').T
     output.to_excel(excel_writer='./output_ohou.xlsx')
 
 # 오늘의 집 링크 입력 => query="Product_Name"
