@@ -69,6 +69,7 @@ def ohou_crawling(url, mode = 0):
                     date = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':'production-review-item__writer__info__date'})).replace("\n", ""))
                     for tem in temp.split('$'):
                         if tem != ', ' and tem != ']' and tem != '[':
+                            print(tem)
                             review.append(tem.replace("\n", ""))
 
                     for dat in date.split('$'):
