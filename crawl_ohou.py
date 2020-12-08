@@ -18,15 +18,24 @@ def doScrollDown(whileSecond, driver):
         if datetime.datetime.now() > end:
             break
 
-def ohou_crawling(url):
+def ohou_crawling(url, mode = 0):
     driver_path = "driver/chromedriver.exe"
     driver = webdriver.Chrome(executable_path=driver_path)
 
     # 페이지 이동
-    url_page = url
-    driver.get(url_page)
-    time.sleep(1)
+    if mode == 1:
+        url += "&order=review"
+    elif mode == 2:
+        url += "&order=buy"
 
+    try:
+        url_page = url
+        driver.get(url_page)
+    except:
+        print("부정확한 url입니다.")
+        return -1
+
+    time.sleep(1)
     #페이지 정보 획득
     title = str(driver.find_element_by_class_name('production-item__header__name').text)
 
@@ -75,4 +84,5 @@ def ohou_crawling(url):
     output.to_excel(excel_writer='./output_ohou.csv')
 
 #오늘의 집 링크 입력 => query="Product_Name"
-ohou_crawling("https://ohou.se/productions/feed?query=%EB%84%A4%EC%98%A4%ED%94%8C%EB%9E%A8")
+#mode = 0 (기본), mode = 1 (리뷰순), mode = 2 (판매순)
+ohou_crawling("https://ohou.se/productions/feed?query=%EB%84%A4%EC%98%A4%ED%94%8C%EB%9E%A8", mode=1)
