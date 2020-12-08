@@ -61,7 +61,7 @@ def ohou_crawling(url, mode = 0):
             title = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':'production-selling-header__title__name'})))
 
             # 리뷰 수집
-            while true:
+            while True:
                 try:
                     html = driver.page_source
                     soup = BeautifulSoup(html, "lxml")
@@ -80,11 +80,15 @@ def ohou_crawling(url, mode = 0):
                     time.sleep(1) # 로딩 대기
 
                 except:
-                    reviews[title] = review+dates
+                    reviews[title] = review
+                    reviews["날짜"] = dates
+                    output = pd.DataFrame(reviews)
+                    output.to_excel(excel_writer='./output_ohou.xlsx')
+                    return -1
                     break
 
     output = pd.DataFrame(reviews)
-    output.to_excel(excel_writer='./output_ohou.csv')
+    output.to_excel(excel_writer='./output_ohou.xlsx')
 
 # 오늘의 집 링크 입력 => query="Product_Name"
 # mode = 0 (기본), mode = 1 (리뷰순), mode = 2 (판매순)
