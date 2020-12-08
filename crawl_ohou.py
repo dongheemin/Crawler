@@ -39,7 +39,7 @@ def ohou_crawling(url, mode = 0):
 
     # 이동 대기
     time.sleep(5.5)
-
+    i = 0;
     # 세부아이템 url 수집
     soup = BeautifulSoup(driver.page_source, "lxml")
     reviews = {}
@@ -58,7 +58,7 @@ def ohou_crawling(url, mode = 0):
             # 제목 수집
             html = driver.page_source
             soup = BeautifulSoup(html, "lxml")
-            title = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':'production-selling-header__title__name'})))
+            title = re.sub('(<([^>]+)>)','',str(soup.find_all('span', {'class':'production-selling-header__title__name'})))
 
             # 리뷰 수집
             while True:
@@ -81,10 +81,8 @@ def ohou_crawling(url, mode = 0):
 
                 except:
                     reviews[title] = review
-                    reviews["날짜"] = dates
-                    output = pd.DataFrame(reviews)
-                    output.to_excel(excel_writer='./output_ohou.xlsx')
-                    return -1
+                    reviews["날짜"+str(i)] = dates
+                    i+=1
                     break
 
     output = pd.DataFrame(reviews)
