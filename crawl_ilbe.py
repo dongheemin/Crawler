@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import pandas as pd
 from selenium import webdriver
 from pyvirtualdisplay import display
@@ -13,17 +10,9 @@ import sys
 import re
 import time
 
-
-# In[2]:
-
-
 display = display.Display(visible=0, size=(1920, 1080)) 
 display.start() 
 path='./chromedriver' 
-
-
-# In[3]:
-
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--single-process")
@@ -32,17 +21,6 @@ chrome_options.add_argument("--headless")  # Background(CLI) 동작 사용
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--remote-debugging-port=9222") 
 driver = webdriver.Chrome(path, chrome_options=chrome_options)
-
-
-# In[4]:
-
-
-# !wget https://chromedriver.storage.googleapis.com/87.0.4280.20/chromedriver_linux64.zip
-# !unzip chromedriver_linux64.zip
-# !pip install lxml
-
-
-# In[6]:
 
 
 url_page = 'http://www.ilbe.com/ilbe'
