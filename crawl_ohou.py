@@ -53,7 +53,7 @@ def ohou_crawling(url, mode = 0):
 
             # 세부아이템 이동
             driver.get(link)
-            time.sleep(3.5)
+            time.sleep(5.5)
 
             # 제목 수집
             html = driver.page_source
