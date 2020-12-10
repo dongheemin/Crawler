@@ -65,8 +65,10 @@ def ohou_crawling(url, mode = 0):
                 try:
                     html = driver.page_source
                     soup = BeautifulSoup(html, "lxml")
-                    temp = re.sub('(<([^>]+)>)','$',str(soup.find_all('p', {'class':'production-review-item__description'})))
-                    date = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':'production-review-item__writer__info__date'})).replace("\n", ""))
+                    temp = re.sub('(<([^>]+)>)','$',str(soup.find_all('p', {'class':'production-review'
+                                                                                    '-item__description'})))
+                    date = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':"production-review"
+                                                                                       "-item__writer__info__date"})).replace("\n", ""))
                     for tem in temp.split('$'):
                         if tem != ', ' and tem != ']' and tem != '[':
                             print(tem)
