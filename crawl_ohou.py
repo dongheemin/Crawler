@@ -53,7 +53,7 @@ def ohou_crawling(url, mode = 0):
 
             # 세부아이템 이동
             driver.get(link)
-            time.sleep(5.5)
+            time.sleep(10)
 
             # 제목 수집
             html = driver.page_source
@@ -71,7 +71,7 @@ def ohou_crawling(url, mode = 0):
                                                                                        "-item__writer__info__date"})).replace("\n", ""))
                     for tem in temp.split('$'):
                         if tem != ', ' and tem != ']' and tem != '[':
-                            print(tem)
+
                             review.append(tem.replace("\n", ""))
 
                     for dat in date.split('$'):
@@ -80,9 +80,11 @@ def ohou_crawling(url, mode = 0):
                             dates.append(dat[0])
 
                     driver.find_element_by_class_name('_2XI47._3I7ex').click() # 다음버튼 (마지막까지 가면 없어짐)
-                    time.sleep(1) # 로딩 대기
+                    time.sleep(2) # 로딩 대기
 
-                except:
+                except Exception as e:
+                    print(str(e))
+                    print(tem)
                     reviews[title] = review
                     reviews["날짜"+str(i)] = dates
                     i+=1
