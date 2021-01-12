@@ -43,52 +43,72 @@ def ohou_crawling(url, mode = 0):
     # 세부아이템 url 수집
     soup = BeautifulSoup(driver.page_source, "lxml")
     reviews = {}
+    review = []
+    dates = []
+    items = []
     # doScrollDown(3, driver) #스크롤 다운기능
     for links in soup.find_all("a",{'class':'production-item__overlay'}):
         if 'href' in links.attrs:
-            review = []
-            dates = []
             link = "https://ohou.se"+str(links.attrs['href'])
             print(link)
 
             # 세부아이템 이동
             driver.get(link)
-            time.sleep(10)
+            time.sleep(5.5)
 
             # 제목 수집
-            html = driver.page_source
-            soup = BeautifulSoup(html, "lxml")
-            title = re.sub('(<([^>]+)>)','',str(soup.find_all('span', {'class':'production-selling-header__title__name'})))
 
+
+            title = re.sub('(<([^>]+)>)','',str(soup.find_all('span', {'class':'production-selling-header__title__name'})))
+            j = 0
             # 리뷰 수집
             while True:
                 try:
                     html = driver.page_source
                     soup = BeautifulSoup(html, "lxml")
+
                     temp = re.sub('(<([^>]+)>)','$',str(soup.find_all('p', {'class':'production-review'
-                                                                                    '-item__description'})))
+                                                                                    '-item__description'})).replace("\n", ""))
                     date = re.sub('(<([^>]+)>)','$',str(soup.find_all('span', {'class':"production-review"
                                                                                        "-item__writer__info__date"})).replace("\n", ""))
+
+                    # temp2 = re.sub('(<([^>]+)>)','$',str(soup.find_all('div', {'class':"production-review-item__name"})).replace("\n", ""))
+                    # print(str(soup.find_all('div', {'class':"production-review-item__name"})).replace("\n", ""))
+                    # print(date)
+                    # print(temp)
+                    # print(temp2)
+
+                    # for item in temp2.split('$'):
+                    #     if item != ', ' and item != ']' and item != '[' and item != '':
+                    #         print(item)
+                    #         items.append(item.replace('\n', ""))
+
                     for tem in temp.split('$'):
                         if tem != ', ' and tem != ']' and tem != '[':
-
-                            review.append(tem.replace("\n", ""))
+                            # print(tem)
+                            review.append(tem.replace('\n', ""))
+                            items.append(title)
 
                     for dat in date.split('$'):
                         if dat != ', ' and dat != ']' and dat != '[':
+
                             dat = dat.split(' ∙ ')
                             dates.append(dat[0])
 
+
+
                     driver.find_element_by_class_name('_2XI47._3I7ex').click() # 다음버튼 (마지막까지 가면 없어짐)
-                    time.sleep(2) # 로딩 대기
+                    time.sleep(1.2) # 로딩 대기
 
                 except Exception as e:
                     print(str(e))
-                    print(tem)
-                    reviews[title] = review
-                    reviews["날짜"+str(i)] = dates
-                    i+=1
+                    # print(tem)
+                    # print(reviews)
                     break
+
+    reviews["품목"] = items
+    reviews["리뷰"] = review
+    reviews["날짜"] = dates
 
     output = pd.DataFrame.from_dict(reviews, orient='index').T
     output.to_excel(excel_writer='./output_ohou.xlsx')
